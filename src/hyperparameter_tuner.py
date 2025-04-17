@@ -104,23 +104,23 @@ class ClassificationHyperTuner:
         }
     
     def boost_xgb(self, trial):
-        learning_rate = trial.suggest_float("learning_rate", 1e-3, 0.1, log=True)
-        n_estimators = trial.suggest_int("n_estimators", 500, 1200 if learning_rate < 0.03 else 1000)
+        learning_rate = trial.suggest_float("learning_rate", 0.01, 0.1, log=True)
+        n_estimators = trial.suggest_int("n_estimators", 100, 500)
 
         return {
             "objective": "binary:logistic",
-            "eval_metric": "logloss",
+            "eval_metric": "aucpr",
             "tree_method": "hist",
             "learning_rate": learning_rate,
             "n_estimators": n_estimators,
-            "max_depth": trial.suggest_int("max_depth", 3, 6),  # Faixa ajustada para uma profundidade mais controlada
-            "min_child_weight": trial.suggest_int("min_child_weight", 1, 5),  # Faixa ajustada
-            "subsample": trial.suggest_float("subsample", 0.6, 1.0),  # Faixa expandida para mais flexibilidade
-            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.5, 1.0),  # Faixa expandida
-            "gamma": trial.suggest_float("gamma", 0.0, 3.0),
-            "lambda": trial.suggest_float("lambda", 1e-3, 2.0, log=True),  # Faixa ajustada
-            "alpha": trial.suggest_float("alpha", 1e-3, 2.0, log=True),  # Faixa ajustada
-            "scale_pos_weight": trial.suggest_float("scale_pos_weight", 0.5, 10.0),
+            "max_depth": trial.suggest_int("max_depth", 3, 5),  # Faixa ajustada para uma profundidade mais controlada
+            "min_child_weight": trial.suggest_int("min_child_weight", 3, 10),  # Faixa ajustada
+            "subsample": trial.suggest_float("subsample", 0.7, 1.0),  # Faixa expandida para mais flexibilidade
+            "colsample_bytree": trial.suggest_float("colsample_bytree", 0.6, 1.0),  # Faixa expandida
+            "gamma": trial.suggest_float("gamma", 0.0, 1.0),
+            "lambda": trial.suggest_float("lambda", 0.01, 10.0, log=True),  # Faixa ajustada
+            "alpha": trial.suggest_float("alpha", 0.01, 10.0, log=True),  # Faixa ajustada
+            "scale_pos_weight": trial.suggest_float("scale_pos_weight", 1, 5),
 
             "random_state": 42,
             "verbosity": 0

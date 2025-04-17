@@ -11,7 +11,7 @@ from sklearn.metrics import (
 )
 
 class ClassificationValidator:
-    def __init__(self, model, plot_roc=True, plot_cm=True, figsize=(12, 5)):
+    def __init__(self, model, plot_roc=True, plot_cm=True, figsize=(10, 5)):
         self.model = model
         self.plot_roc = plot_roc
         self.plot_cm = plot_cm
